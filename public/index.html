@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Uptime Monitor</title>
+<style>
+body {
+  background:#0f0f0f;
+  color:#ccc;
+  font-family:Arial;
+  text-align:center;
+}
+input {
+  padding:10px;
+  width:300px;
+  background:#1a1a1a;
+  border:1px solid #333;
+  color:white;
+}
+button {
+  padding:10px 20px;
+  background:#333;
+  border:none;
+  color:white;
+  cursor:pointer;
+}
+.card {
+  margin-top:20px;
+  padding:20px;
+  background:#1a1a1a;
+  border-radius:10px;
+}
+.status-up { color:#00ff88; }
+.status-down { color:#ff4444; }
+</style>
+</head>
+<body>
+
+<h1>Server Uptime Monitor</h1>
+
+<input id="url" placeholder="https://example.com">
+<button onclick="start()">Start</button>
+
+<div class="card">
+  <h2 id="status">Waiting...</h2>
+  <p id="code"></p>
+  <p id="time"></p>
+  <p id="message"></p>
+</div>
+
+<script>
+let interval;
+
+function start(){
+  const url = document.getElementById("url").value;
+  if(!url) return alert("Masukkan URL");
+
+  if(interval) clearInterval(interval);
+
+  interval = setInterval(async ()=>{
+    const res = await fetch(`/api/check?url=${encodeURIComponent(url)}`);
+    const data = await res.json();
+
+    document.getElementById("status").innerHTML =
+      data.alive ? "ONLINE" : "OFFLINE";
+
+    document.getElementById("status").className =
+      data.alive ? "status-up" : "status-down";
+
+    document.getElementById("code").innerText =
+      "Status: " + data.status;
+
+    document.getElementById("time").innerText =
+      "Response: " + data.responseTime + " ms";
+
+    document.getElementById("message").innerText =
+      data.message;
+
+  },1000);
+}
+</script>
+
+</body>
+</html>
