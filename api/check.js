@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   };
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10000);
+  const timeout = setTimeout(() => controller.abort(), 15000);
 
   const start = Date.now();
 
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     statusInfo.responseTime = Date.now() - start;
 
     if (err.name === "AbortError") {
-      statusInfo.message = "Timeout (10s)";
+      statusInfo.message = "Timeout (15s)";
     } else if (err.code === "ENOTFOUND") {
       statusInfo.message = "DNS Not Found";
     } else if (err.code === "ECONNREFUSED") {
