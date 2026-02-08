@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     statusInfo.responseTime = Date.now() - start;
 
     if (err.name === "AbortError") {
-      statusInfo.message = "Timeout (15s)";
+      statusInfo.message = "Timeout (10s)";
     } else if (err.code === "ENOTFOUND") {
       statusInfo.message = "DNS Not Found";
     } else if (err.code === "ECONNREFUSED") {
